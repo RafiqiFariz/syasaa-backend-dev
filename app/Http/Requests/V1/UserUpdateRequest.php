@@ -4,15 +4,16 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::allows('user_create');
+        return Gate::allows('user_update');
     }
 
     /**
@@ -24,8 +25,14 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($this->request->get('id')),
+            ],
+            'password' => 'nullable|string|min:8|confirmed',
             'phone' => 'nullable|string|min:10|unique:users,phone',
             'role_id' => 'required|exists:roles,id'
         ];
@@ -47,10 +54,9 @@ class UserStoreRequest extends FormRequest
             'email.email' => 'Email harus berupa email',
             'email.max' => 'Email maksimal 255 karakter',
             'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password tidak boleh kosong',
-            'password.string' => 'Password harus berupa string',
             'password.confirmed' => 'Password tidak cocok',
             'password.min' => 'Password minimal 8 karakter',
+            'password.string' => 'Password harus berupa string',
             'phone.string' => 'Phone harus berupa string',
             'phone.min' => 'Phone minimal 10 karakter',
             'phone.unique' => 'Phone sudah terdaftar',

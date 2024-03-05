@@ -19,17 +19,11 @@ Route::get('/', function () {
         'name' => 'API SYASAA',
         'version' => '1.0',
         'description' => 'API SYASAA digunakan untuk aplikasi absensi di lingkungan universitas.',
-        'documentation' => '-',
+        'documentation' => 'https://documenter.getpostman.com/view/16454761/2sA2xcaF8o',
         'status' => 200,
     ]);
 })->name('home');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-
-Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
-
-    return ['token' => $token->plainTextToken];
 });

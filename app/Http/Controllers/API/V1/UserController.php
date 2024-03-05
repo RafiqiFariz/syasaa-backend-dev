@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Filters\V1\UsersFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UserStoreRequest;
+use App\Http\Requests\V1\UserUpdateRequest;
 use App\Http\Resources\V1\UserCollection;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
@@ -18,7 +20,7 @@ class UserController extends Controller
      */
     public function index(Request $request): UserCollection
     {
-//        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
+        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         $filter = new UsersFilter();
         $filterItems = $filter->transform($request); // [['column', 'operator', 'value']]
@@ -37,10 +39,8 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request): UserResource
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, 'Forbidden');
-
         $request['password'] = bcrypt($request->password);
         return new UserResource(User::create($request->all()));
     }
@@ -62,7 +62,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user): \Illuminate\Http\JsonResponse
     {
         if (!empty($request->password)) {
             $request['password'] = bcrypt($request->password);
@@ -71,16 +71,16 @@ class UserController extends Controller
 
         $user->update($request->except('password'));
 
-        return response()->json(['status' => 'Data user berhasil diupdate.', 'data' => $request->all()]);
+        return response()->json(["status" => "Data user $user->id berhasil diupdate."]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): \Illuminate\Http\JsonResponse
     {
         $user->delete();
 
-        return response()->json(['status' => 'Data user berhasil dihapus.']);
+        return response()->json(["status" => "Data user $user->id berhasil dihapus."]);
     }
 }
