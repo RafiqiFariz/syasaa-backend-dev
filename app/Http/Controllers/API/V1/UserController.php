@@ -48,7 +48,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $user): UserResource
     {
         $includeRole = request()->query('includeRole');
 
@@ -71,7 +71,10 @@ class UserController extends Controller
 
         $user->update($request->except('password'));
 
-        return response()->json(["status" => "Data user $user->id berhasil diupdate."]);
+        return response()->json([
+            "message" => "User $user->id updated successfully.",
+            "data" => new UserResource($user)
+        ]);
     }
 
     /**
@@ -80,7 +83,6 @@ class UserController extends Controller
     public function destroy(User $user): \Illuminate\Http\JsonResponse
     {
         $user->delete();
-
-        return response()->json(["status" => "Data user $user->id berhasil dihapus."]);
+        return response()->json(["message" => "User deleted successfully."]);
     }
 }

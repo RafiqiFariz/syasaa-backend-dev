@@ -30,32 +30,4 @@ class UserStoreRequest extends FormRequest
             'role_id' => 'required|exists:roles,id'
         ];
     }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'Name tidak boleh kosong',
-            'name.string' => 'Name harus berupa string',
-            'name.max' => 'Name maksimal 255 karakter',
-            'email.required' => 'Email tidak boleh kosong',
-            'email.string' => 'Email harus berupa string',
-            'email.email' => 'Email harus berupa email',
-            'email.max' => 'Email maksimal 255 karakter',
-            'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password tidak boleh kosong',
-            'password.string' => 'Password harus berupa string',
-            'password.confirmed' => 'Password tidak cocok',
-            'password.min' => 'Password minimal 8 karakter',
-            'phone.string' => 'Phone harus berupa string',
-            'phone.min' => 'Phone minimal 10 karakter',
-            'phone.unique' => 'Phone sudah terdaftar',
-            'role_id.required' => 'Role tidak boleh kosong',
-            'role_id.exists' => 'Role tidak ditemukan'
-        ];
-    }
 }

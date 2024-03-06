@@ -15,4 +15,9 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class)->using(PermissionRole::class);
     }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }
