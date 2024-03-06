@@ -24,6 +24,12 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/reset-password/{token}', function ($token) {
+    return $token;
+})
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('password.reset');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
