@@ -31,5 +31,5 @@ Route::get('/reset-password/{token}', function ($token) {
     ->name('password.reset');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load('role');
 });
