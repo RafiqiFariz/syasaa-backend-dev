@@ -3,8 +3,8 @@
 use App\Http\Controllers\API\V1\PermissionController;
 use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +23,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
     });
+});
+
+// Custom route for updating user profile information based on the Fortify route
+Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
+    Route::put('/profile-information', [ProfileInformationController::class, 'update']);
 });
