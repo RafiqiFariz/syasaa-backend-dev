@@ -36,6 +36,7 @@ class PermissionRoleSeeder extends Seeder
             'user_create', 'user_delete', 'user_restore',
             'class_create', 'class_update', 'class_delete', 'class_edit',
             'course_create', 'course_update', 'course_delete', 'course_edit',
+            'course_class_create', 'course_class_update', 'course_class_delete',
             'faculty_create', 'faculty_update', 'faculty_delete', 'faculty_edit',
             'major_create', 'major_update', 'major_delete', 'major_edit',
             'role_', 'permission_',

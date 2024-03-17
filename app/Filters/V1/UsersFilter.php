@@ -9,12 +9,11 @@ class UsersFilter extends APIFilter
     protected $safeParams = [
         'name' => ['eq', 'ne'],
         'email' => ['eq', 'ne'],
-        'roleId' => ['eq', 'ne'],
+        'role_id' => ['eq', 'ne'],
     ];
 
-    protected $columnMap = [
-        'roleId' => 'role_id',
-    ];
+    // ini ngga kepakai
+    protected $columnMap = [];
 
     protected $operatorMap = [
         'eq' => '=',

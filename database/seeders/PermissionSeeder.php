@@ -29,6 +29,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'faculty_update'],
             ['name' => 'faculty_delete'],
             ['name' => 'faculty_edit'],
+            ['name' => 'faculty_show'],
 
             // Major Management
             ['name' => 'major_access'],
@@ -36,6 +37,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'major_update'],
             ['name' => 'major_delete'],
             ['name' => 'major_edit'],
+            ['name' => 'major_show'],
 
             // Classes Management
             ['name' => 'class_access'],
@@ -43,6 +45,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'class_update'],
             ['name' => 'class_delete'],
             ['name' => 'class_edit'],
+            ['name' => 'class_show'],
 
             // Course Management
             ['name' => 'course_access'],
@@ -52,12 +55,21 @@ class PermissionSeeder extends Seeder
             ['name' => 'course_edit'],
             ['name' => 'course_show'],
 
+            // Course Classes Management
+            ['name' => 'course_class_access'],
+            ['name' => 'course_class_create'],
+            ['name' => 'course_class_update'],
+            ['name' => 'course_class_delete'],
+            ['name' => 'course_class_edit'],
+            ['name' => 'course_class_show'],
+
             // Attendance Management
             ['name' => 'attendance_access'],
             ['name' => 'attendance_create'],
             ['name' => 'attendance_update'],
             ['name' => 'attendance_delete'],
             ['name' => 'attendance_edit'],
+            ['name' => 'attendance_show'],
 
             // Role Management
             ['name' => 'role_access'],
@@ -65,6 +77,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'role_update'],
             ['name' => 'role_delete'],
             ['name' => 'role_edit'],
+            ['name' => 'role_show'],
 
             // Permission Management
             ['name' => 'permission_access'],
@@ -72,6 +85,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'permission_update'],
             ['name' => 'permission_delete'],
             ['name' => 'permission_edit'],
+            ['name' => 'permission_show'],
 
             // Permission Role Management
             ['name' => 'permission_role_access'],
@@ -79,6 +93,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'permission_role_update'],
             ['name' => 'permission_role_delete'],
             ['name' => 'permission_role_edit'],
+            ['name' => 'permission_role_show'],
 
             // Report Management
             ['name' => 'report_create'],
