@@ -9,6 +9,7 @@ class Major extends Model
 {
     use HasFactory;
 
+    protected $with = ['faculty'];
     protected $guarded = [];
 
     public function classes(): \Illuminate\Database\Eloquent\Relations\HasMany

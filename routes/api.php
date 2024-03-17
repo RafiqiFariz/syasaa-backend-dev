@@ -1,29 +1,24 @@
 <?php
 
+use App\Http\Controllers\API\V1\ClassController;
 use App\Http\Controllers\API\V1\CourseController;
+use App\Http\Controllers\API\V1\FacultyController;
+use App\Http\Controllers\API\V1\MajorController;
 use App\Http\Controllers\API\V1\PermissionController;
 use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        Route::apiResource('users', UserController::class);
-        Route::apiResource('roles', RoleController::class);
-        Route::apiResource('permissions', PermissionController::class);
         Route::apiResource('courses', CourseController::class);
+        Route::apiResource('classes', ClassController::class);
+        Route::apiResource('faculties', FacultyController::class);
+        Route::apiResource('majors', MajorController::class);
+        Route::apiResource('permissions', PermissionController::class);
+        Route::apiResource('roles', RoleController::class);
+        Route::apiResource('users', UserController::class);
     });
 });
 

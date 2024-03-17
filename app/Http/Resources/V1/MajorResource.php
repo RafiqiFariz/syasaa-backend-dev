@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClassResource extends JsonResource
+class MajorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,6 +17,8 @@ class ClassResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'faculty' => new FacultyResource($this->whenLoaded('faculty')),
+            'classes' => $this->whenLoaded('classes'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
