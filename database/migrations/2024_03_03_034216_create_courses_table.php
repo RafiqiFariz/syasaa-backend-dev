@@ -15,11 +15,8 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(MajorClass::class);
-            $table->foreignIdFor(Lecturer::class);
             $table->string('name');
-            $table->dateTime('time');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

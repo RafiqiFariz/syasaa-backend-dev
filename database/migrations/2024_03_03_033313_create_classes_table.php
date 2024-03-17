@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Major::class);
             $table->string('name');
+            $table->string('lat');
+            $table->string('lng');
             $table->timestamps();
         });
     }

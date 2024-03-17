@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\CourseController;
 use App\Http\Controllers\API\V1\PermissionController;
 use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\UserController;
@@ -22,6 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
+        Route::apiResource('courses', CourseController::class);
     });
 });
 

@@ -51,6 +51,21 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function student(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function lecturer(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Lecturer::class);
+    }
+
+    public function facultyStaff(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(FacultyStaff::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role->name === 'admin';
