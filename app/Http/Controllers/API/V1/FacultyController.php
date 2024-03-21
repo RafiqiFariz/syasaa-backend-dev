@@ -33,9 +33,12 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FacultyRequest $request): FacultyResource
+    public function store(FacultyRequest $request): \Illuminate\Http\JsonResponse
     {
-        return new FacultyResource(Faculty::create($request->all()));
+        return response()->json([
+            "message" => "Faculty created successfully",
+            "data" => new FacultyResource(Faculty::create($request->all())),
+        ]);
     }
 
     /**

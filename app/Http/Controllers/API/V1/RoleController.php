@@ -32,7 +32,7 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      * @throws \Exception
      */
-    public function store(RoleRequest $request): RoleResource
+    public function store(RoleRequest $request): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -40,7 +40,10 @@ class RoleController extends Controller
             $role->permissions()->sync($request->input('permissions', []));
 
             DB::commit();
-            return new RoleResource($role);
+            return response()->json([
+                "message" => "Role created successfully",
+                "data" => new RoleResource($role),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;

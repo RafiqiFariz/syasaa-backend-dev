@@ -39,10 +39,13 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request): UserResource
+    public function store(UserStoreRequest $request): \Illuminate\Http\JsonResponse
     {
         $request['password'] = bcrypt($request->password);
-        return new UserResource(User::create($request->all()));
+        return response()->json([
+            "message" => "User created successfully",
+            "data" => new UserResource(User::create($request->all())),
+        ]);
     }
 
     /**

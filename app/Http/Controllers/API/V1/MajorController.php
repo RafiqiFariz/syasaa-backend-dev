@@ -32,9 +32,12 @@ class MajorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(MajorRequest $request): MajorResource
+    public function store(MajorRequest $request): \Illuminate\Http\JsonResponse
     {
-        return new MajorResource(Major::create($request->all()));
+        return response()->json([
+            "message" => "Major created successfully",
+            "data" => new MajorResource(Major::create($request->all())),
+        ]);
     }
 
     /**

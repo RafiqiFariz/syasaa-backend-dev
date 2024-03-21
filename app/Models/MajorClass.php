@@ -10,9 +10,11 @@ class MajorClass extends Model
     use HasFactory;
 
     protected $table = 'classes';
+    protected $guarded = [];
+    protected $with = ['major'];
 
-    public function courses(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function major(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsToMany(Course::class)->using(CourseClass::class);
+        return $this->belongsTo(Major::class);
     }
 }

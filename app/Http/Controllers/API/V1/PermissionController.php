@@ -22,9 +22,12 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PermissionRequest $request): PermissionResource
+    public function store(PermissionRequest $request): \Illuminate\Http\JsonResponse
     {
-        return new PermissionResource(Permission::create($request->only('name')));
+        return response()->json([
+            "message" => "Faculty created successfully",
+            "data" => new PermissionResource(Permission::create($request->only('name'))),
+        ]);
     }
 
     /**

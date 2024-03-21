@@ -13,7 +13,7 @@ use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('courses', CourseController::class);
-        Route::apiResource('classes', ClassController::class);
+        Route::apiResource('major-classes', ClassController::class);
         Route::apiResource('faculties', FacultyController::class);
         Route::apiResource('majors', MajorController::class);
         Route::apiResource('permissions', PermissionController::class);

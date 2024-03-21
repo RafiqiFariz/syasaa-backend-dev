@@ -25,9 +25,12 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CourseRequest $request): CourseResource
+    public function store(CourseRequest $request): \Illuminate\Http\JsonResponse
     {
-        return new CourseResource(Course::create($request->all()));
+        return response()->json([
+            "message" => "Course created successfully",
+            "data" => new CourseResource(Course::create($request->all())),
+        ]);
     }
 
     /**
