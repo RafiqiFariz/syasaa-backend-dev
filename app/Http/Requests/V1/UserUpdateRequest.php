@@ -34,7 +34,10 @@ class UserUpdateRequest extends FormRequest
             ],
             'password' => 'nullable|string|min:8|confirmed',
             'phone' => 'nullable|string|min:10|unique:users,phone',
-            'role_id' => 'required|exists:roles,id'
+            'role_id' => 'required|exists:roles,id',
+            'faculty_id' => 'required_if:role_id,2|exists:faculties,id',
+            'address' => 'required_if:role_id,3|string',
+            'class_id' => 'required_if:role_id,4|exists:classes,id',
         ];
     }
 }

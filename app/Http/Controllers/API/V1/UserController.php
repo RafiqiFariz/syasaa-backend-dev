@@ -42,9 +42,20 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): \Illuminate\Http\JsonResponse
     {
         $request['password'] = bcrypt($request->password);
+
+        $user = User::create($request->all());
+
+        if ((int)$request->role_id === 2) {
+            $user->facultyStaff()->create(["faculty_id" => $request->faculty_id]);
+        } else if ((int)$request->role_id === 3) {
+            $user->lecturer()->create(["address" => $request->address]);
+        } else if ((int)$request->role_id === 4) {
+            $user->student()->create(["class_id" => $request->class_id]);
+        }
+
         return response()->json([
             "message" => "User created successfully",
-            "data" => new UserResource(User::create($request->all())),
+            "data" => new UserResource($user),
         ]);
     }
 
@@ -73,6 +84,14 @@ class UserController extends Controller
         }
 
         $user->update($request->except('password'));
+
+        if ((int)$request->role_id === 2) {
+            $user->facultyStaff()->update(["faculty_id" => $request->faculty_id]);
+        } else if ((int)$request->role_id === 3) {
+            $user->lecturer()->update(["address" => $request->address]);
+        } else if ((int)$request->role_id === 4) {
+            $user->student()->update(["class_id" => $request->class_id]);
+        }
 
         return response()->json([
             "message" => "User $user->id updated successfully.",
