@@ -12,7 +12,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('course_class', function (Blueprint $table) {
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+        Schema::create('course_class', function (Blueprint $table) use ($days) {
             $table->id();
             $table->foreignIdFor(Course::class);
             $table->foreignId('class_id')
@@ -20,7 +22,9 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignIdFor(Lecturer::class);
-            $table->time('time');
+            $table->enum('day', $days);
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
         });
     }

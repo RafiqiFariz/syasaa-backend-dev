@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faculty;
+use App\Models\MajorClass;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -76,5 +78,18 @@ class UserSeeder extends Seeder
         );
 
         User::factory(4)->create();
+
+        $facultyIds = Faculty::all()->pluck('id')->toArray();
+        $classIds = MajorClass::all()->pluck('id')->toArray();
+
+        User::all()->each(function ($user) use ($classIds, $facultyIds) {
+            if ($user->role_id === 2) {
+                $user->facultyStaff()->create(["faculty_id" => $facultyIds[array_rand($facultyIds)]]);
+            } else if ($user->role_id === 3) {
+                $user->lecturer()->create(["address" => fake()->address]);
+            } else if ($user->role_id === 4) {
+                $user->student()->create(["class_id" => $classIds[array_rand($classIds)]]);
+            }
+        });
     }
 }

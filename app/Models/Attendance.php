@@ -10,6 +10,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $with = ['student', 'courseClass'];
 
     public function student(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
