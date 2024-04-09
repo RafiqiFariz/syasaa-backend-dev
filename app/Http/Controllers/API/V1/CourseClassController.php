@@ -48,7 +48,7 @@ class CourseClassController extends Controller
     {
         return response()->json([
             "message" => "Course class created successfully",
-            "data" => CourseClass::create($request->all()),
+            "data" => new CourseClassResource(CourseClass::create($request->all())),
         ]);
     }
 
