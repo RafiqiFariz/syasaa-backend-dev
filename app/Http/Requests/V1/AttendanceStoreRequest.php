@@ -5,7 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class AttendanceRequest extends FormRequest
+class AttendanceStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class AttendanceRequest extends FormRequest
     {
         return [
             'student_id' => 'required|exists:students,id',
-            'course_class_id' => 'required|exists:course_classes,id',
-            'attendance_request_id' => 'required|exists:attendance_requests,id',
+            'course_class_id' => 'required|exists:course_class,id',
+            'attendance_request_id' => 'nullable|exists:attendance_requests,id',
             'student_image' => 'required|image|max:10240',
             'lecturer_image' => 'required|image|max:10240',
             'is_present' => 'required|boolean',

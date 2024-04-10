@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Student::class);
-            $table->foreignIdFor(AttendanceRequest::class);
+            $table->foreignIdFor(AttendanceRequest::class)->nullable();
             $table->foreignId('course_class_id')
                 ->constrained('course_class')
                 ->cascadeOnUpdate()

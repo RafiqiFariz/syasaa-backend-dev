@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\Attendance;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Storage;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,7 +14,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $oldAttendances = Attendance::where('created_at', '<', now()->subDay())->get();
+
+            foreach ($oldAttendances as $attendance) {
+                $attendance->update(['student_image' => null, 'lecturer_image' => null]);
+                $imagePath = 'attendances/student-' . $attendance->student_id;
+                Storage::delete([
+                    $imagePath . '/' . $attendance->student_image,
+                    $imagePath . '/' . $attendance->lecturer_image
+                ]);
+            }
+        })->daily();
     }
 
     /**
@@ -20,7 +33,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

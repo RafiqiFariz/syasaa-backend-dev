@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\AttendanceRequest;
+use App\Http\Requests\V1\AttendanceStoreRequest;
+use App\Http\Requests\V1\AttendanceUpdateRequest;
 use App\Http\Resources\V1\AttendanceCollection;
 use App\Http\Resources\V1\AttendanceResource;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class AttendanceController extends Controller
@@ -18,17 +20,37 @@ class AttendanceController extends Controller
     public function index(): AttendanceCollection
     {
         abort_if(Gate::denies('attendance_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
-        return new AttendanceCollection(Attendance::paginate(20));
+        return new AttendanceCollection(Attendance::with([
+            'courseClass.course', 'courseClass.lecturer.user'
+        ])->paginate(20));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AttendanceRequest $request): \Illuminate\Http\JsonResponse
+    public function store(AttendanceStoreRequest $request): \Illuminate\Http\JsonResponse
     {
+        $imagePath = 'attendances/student-' . $request->student_id;
+
+        $data = $request->all();
+
+        if ($request->hasFile('student_image')) {
+            $studentImageName = $request->student_id . '-' .
+                $request->course_class_id . time() . '.' . $request->student_image->extension();
+            $request->file('student_image')->storeAs($imagePath, $studentImageName, 'public');
+            $data['student_image'] = $studentImageName;
+        }
+
+        if ($request->hasFile('lecturer_image')) {
+            $lecturerImageName = $request->student_id . '-lec-' .
+                $request->course_class_id . time() . '.' . $request->lecturer_image->extension();
+            $request->file('lecturer_image')->storeAs($imagePath, $lecturerImageName, 'public');
+            $data['lecturer_image'] = $lecturerImageName;
+        }
+
         return response()->json([
             "message" => "Attendance created successfully",
-            "data" => new AttendanceResource(Attendance::create($request->all())),
+            "data" => new AttendanceResource(Attendance::create($data)),
         ]);
     }
 
@@ -44,9 +66,33 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AttendanceRequest $request, Attendance $attendance): \Illuminate\Http\JsonResponse
+    public function update(AttendanceUpdateRequest $request, Attendance $attendance): \Illuminate\Http\JsonResponse
     {
-        $attendance->update($request->all());
+        $imagePath = 'attendances/student-' . $request->student_id;
+
+        $data = $request->all();
+
+        if ($request->hasFile('student_image')) {
+            // hapus gambar lama
+            Storage::delete("public/$imagePath/$attendance->student_image");
+
+            $studentImageName = $request->student_id . '-' .
+                $request->course_class_id . time() . '.' . $request->student_image->extension();
+            $request->file('student_image')->storeAs($imagePath, $studentImageName, 'public');
+            $data['student_image'] = $studentImageName;
+        }
+
+        if ($request->hasFile('lecturer_image')) {
+            // hapus gambar lama
+            Storage::delete("public/$imagePath/$attendance->lecturer_image");
+
+            $lecturerImageName = $request->student_id . '-lec-' .
+                $request->course_class_id . time() . '.' . $request->lecturer_image->extension();
+            $request->file('lecturer_image')->storeAs($imagePath, $lecturerImageName, 'public');
+            $data['lecturer_image'] = $lecturerImageName;
+        }
+
+        $attendance->update($data);
 
         return response()->json([
             "message" => "Attendance $attendance->id updated successfully",

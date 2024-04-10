@@ -33,6 +33,18 @@ class UserController extends Controller
             $users = $users->with(['role']);
         }
 
+        if ($request->role_id && $request->role_id['eq'] == 2 && $request->faculty_id) {
+            $users = $users->whereHas('facultyStaff', function ($query) use ($request) {
+                $query->where('faculty_id', $request->faculty_id);
+            });
+        }
+
+        if ($request->role_id && $request->role_id['eq'] == 4 && $request->class_id) {
+            $users = $users->whereHas('student', function ($query) use ($request) {
+                $query->where('class_id', $request->class_id);
+            });
+        }
+
         return new UserCollection($users->paginate(20)->appends($request->query()));
     }
 
