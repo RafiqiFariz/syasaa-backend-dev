@@ -24,7 +24,7 @@ class CourseClassResource extends JsonResource
             'end_time' => $this->end_time,
             'class' => $this->whenLoaded('class'),
             'course' => $this->whenLoaded('course'),
-            'lecturer' => $this->whenLoaded('lecturer'),
+            'lecturer' => new LecturerResource($this->whenLoaded('lecturer')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

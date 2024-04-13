@@ -46,7 +46,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $with = ['facultyStaff', 'lecturer', 'student'];
+//    protected $with = ['facultyStaff', 'lecturer', 'student'];
 
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

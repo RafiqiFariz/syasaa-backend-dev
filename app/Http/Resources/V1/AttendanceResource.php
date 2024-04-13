@@ -29,7 +29,7 @@ class AttendanceResource extends JsonResource
             'student_image' => $this->student_image,
             'lecturer_image' => $this->lecturer_image,
             'is_present' => $this->is_present,
-            'student' => $this->whenLoaded('student'),
+            'student' => new StudentResource($this->whenLoaded('student')),
             'course_class' => $courseClass,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
