@@ -19,7 +19,7 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'student_id' => User::where('role_id', 4)->inRandomOrder()->first()->id,
+            'student_id' => User::where('role_id', 4)->inRandomOrder()->first()->student->id,
             'course_class_id' => CourseClass::inRandomOrder()->first()->id,
             'student_image' => $this->faker->imageUrl(category: 'people'),
             'lecturer_image' => $this->faker->imageUrl(category: 'people'),
