@@ -21,9 +21,14 @@ class MajorController extends Controller
 
         $majors = Major::query();
         $includeClasses = request()->query('includeClasses');
+        $paginate = request()->query('paginate');
 
         if ($includeClasses) {
             $majors = $majors->with('classes');
+        }
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new MajorCollection($majors->get());
         }
 
         return new MajorCollection($majors->paginate(20));

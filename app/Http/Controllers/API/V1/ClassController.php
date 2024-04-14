@@ -18,6 +18,13 @@ class ClassController extends Controller
     public function index(): ClassCollection
     {
         abort_if(Gate::denies('class_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
+
+        $paginate = request()->query('paginate');
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new ClassCollection(MajorClass::all());
+        }
+
         return new ClassCollection(MajorClass::paginate(20));
     }
 
