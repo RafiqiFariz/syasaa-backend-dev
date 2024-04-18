@@ -20,12 +20,13 @@ class ClassController extends Controller
         abort_if(Gate::denies('class_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
         $paginate = request()->query('paginate');
+        $major = MajorClass::with('major.faculty');
 
         if ($paginate == 'false' || $paginate == '0') {
-            return new ClassCollection(MajorClass::all());
+            return new ClassCollection($major->get());
         }
 
-        return new ClassCollection(MajorClass::paginate(20));
+        return new ClassCollection($major->paginate(20));
     }
 
     /**
@@ -45,7 +46,7 @@ class ClassController extends Controller
     public function show(MajorClass $majorClass): ClassResource
     {
         abort_if(Gate::denies('class_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
-        return new ClassResource($majorClass->load('major'));
+        return new ClassResource($majorClass->load('major.faculty'));
     }
 
     /**
