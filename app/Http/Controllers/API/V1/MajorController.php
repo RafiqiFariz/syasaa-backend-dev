@@ -7,7 +7,7 @@ use App\Http\Requests\V1\MajorRequest;
 use App\Http\Resources\V1\MajorCollection;
 use App\Http\Resources\V1\MajorResource;
 use App\Models\Major;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Gate;
 
 class MajorController extends Controller
@@ -19,7 +19,7 @@ class MajorController extends Controller
     {
         abort_if(Gate::denies('major_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        $majors = Major::query();
+        $majors = Major::with('faculty');
         $includeClasses = request()->query('includeClasses');
         $paginate = request()->query('paginate');
 
@@ -50,6 +50,9 @@ class MajorController extends Controller
      */
     public function show(Major $major): MajorResource
     {
+        abort_if(Gate::denies('major_show'), Response::HTTP_FORBIDDEN, 'Forbidden');
+
+        $major = $major->loadMissing('faculty');
         $includeClasses = request()->query('includeClasses');
 
         if ($includeClasses) {
@@ -77,6 +80,8 @@ class MajorController extends Controller
      */
     public function destroy(Major $major): \Illuminate\Http\JsonResponse
     {
+        abort_if(Gate::denies('major_delete'), Response::HTTP_FORBIDDEN, 'Forbidden');
+
         $major->delete();
         return response()->json(["message" => "Major deleted successfully"]);
     }

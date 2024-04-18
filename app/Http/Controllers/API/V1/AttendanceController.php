@@ -8,6 +8,7 @@ use App\Http\Requests\V1\AttendanceUpdateRequest;
 use App\Http\Resources\V1\AttendanceCollection;
 use App\Http\Resources\V1\AttendanceResource;
 use App\Models\Attendance;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,12 +18,33 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): AttendanceCollection
+    public function index(Request $request): AttendanceCollection
     {
         abort_if(Gate::denies('attendance_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
-        return new AttendanceCollection(Attendance::with([
-            'courseClass.course', 'courseClass.lecturer.user'
-        ])->paginate(20));
+
+        $classId = $request->query('class_id');
+        $majorId = $request->query('major_id');
+
+        $attendances = Attendance::with([
+            'courseClass.course', 'courseClass.lecturer.user',
+            'courseClass.class',
+        ]);
+
+        if ($classId) {
+            $attendances = $attendances->whereHas('courseClass', function ($query) use ($classId) {
+                $query->where('class_id', $classId);
+            });
+        }
+
+        if ($majorId) {
+            $attendances = $attendances->whereHas('courseClass', function ($query) use ($majorId) {
+                $query->whereHas('class', function ($query) use ($majorId) {
+                    $query->where('major_id', $majorId);
+                });
+            });
+        }
+
+        return new AttendanceCollection($attendances->paginate(20)->appends($request->query()));
     }
 
     /**

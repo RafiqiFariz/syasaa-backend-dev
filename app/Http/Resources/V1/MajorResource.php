@@ -17,6 +17,7 @@ class MajorResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'faculty_id' => $this->faculty_id,
             'faculty' => new FacultyResource($this->whenLoaded('faculty')),
             'classes' => $this->whenLoaded('classes'),
             'created_at' => $this->created_at,

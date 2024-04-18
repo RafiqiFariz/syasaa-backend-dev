@@ -29,7 +29,7 @@ class CourseClassController extends Controller
         $courseClasses = CourseClass::query();
 
         if ($includeClass) {
-            $courseClasses = $courseClasses->with(['class']);
+            $courseClasses = $courseClasses->with(['class.major.faculty']);
         }
 
         if ($includeCourse) {
