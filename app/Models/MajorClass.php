@@ -11,7 +11,6 @@ class MajorClass extends Model
 
     protected $table = 'classes';
     protected $guarded = [];
-    protected $with = ['major'];
 
     public function major(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
