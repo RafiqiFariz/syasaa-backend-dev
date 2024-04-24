@@ -17,27 +17,40 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
+                'required', 'string', 'email', 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'phone' => ['nullable', 'string', 'min:10', Rule::unique('users', 'phone')->ignore($user->id)],
-        ])->validateWithBag('updateProfileInformation');
+            'phone' => [
+                'nullable', 'string', 'min:10',
+                Rule::unique('users', 'phone')->ignore($user->id)
+            ],
+        ];
+
+        if ($user->role_id === 3) {
+            $rules['address'] = ['nullable', 'string'];
+        }
+
+        Validator::make($input, $rules)->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
-        } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'phone' => $input['phone'],
-            ])->save();
+            return;
+        }
+
+        $user->forceFill([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'phone' => $input['phone'],
+        ])->save();
+
+        if ($user->role_id === 3) {
+            $user->lecturer()->update([
+                'address' => $input['address'],
+            ]);
         }
     }
 

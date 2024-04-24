@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\V1\ProfilePhotoController;
 use App\Http\Resources\V1\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +37,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return (new UserResource($request->user()->load('role')))
         ->response()
         ->getData(true)['data'];
+});
+
+// Custom route for updating user profile information based on the Fortify route
+$fortifyMiddleware = config('fortify.auth_middleware', 'auth') . ':' . config('fortify.guard');
+
+Route::group(['prefix' => 'user', 'middleware' => [$fortifyMiddleware]], function () {
+    Route::put('/profile-information', [ProfileInformationController::class, 'update'])
+        ->name('user-profile-information.update');
+    Route::put('/profile-photo', [ProfilePhotoController::class, 'update'])->name('user-profile-photo.update');
+    Route::delete('/remove-photo', [ProfilePhotoController::class, 'delete'])->name('user-profile-photo.delete');
 });

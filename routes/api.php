@@ -7,6 +7,7 @@ use App\Http\Controllers\API\V1\CourseController;
 use App\Http\Controllers\API\V1\FacultyController;
 use App\Http\Controllers\API\V1\MajorController;
 use App\Http\Controllers\API\V1\PermissionController;
+use App\Http\Controllers\API\V1\ProfilePhotoController;
 use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -24,9 +25,4 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('users', UserController::class);
     });
-});
-
-// Custom route for updating user profile information based on the Fortify route
-Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
-    Route::put('/profile-information', [ProfileInformationController::class, 'update']);
 });
