@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Resources\V1\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
-        'name' => 'API SYASAA',
+        'name' => 'API Web Attendance System',
         'version' => '1.0',
-        'description' => 'API SYASAA digunakan untuk aplikasi absensi di lingkungan universitas.',
+        'description' => 'API Web Attendance System digunakan untuk aplikasi absensi di lingkungan universitas.',
         'documentation' => 'https://documenter.getpostman.com/view/16454761/2sA2xcaF8o',
         'status' => 200,
     ]);
@@ -31,5 +32,7 @@ Route::get('/reset-password/{token}', function ($token) {
     ->name('password.reset');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('role');
+    return (new UserResource($request->user()->load('role')))
+        ->response()
+        ->getData(true)['data'];
 });

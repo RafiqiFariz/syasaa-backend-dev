@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Admin',
                     'email' => 'admin@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => 'img/yoo_seung_ho.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('admin123'),
                     'remember_token' => Str::random(10),
@@ -32,6 +34,8 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Staf Fakultas 1',
                     'email' => 'staffakultas1@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => null,
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
                     'remember_token' => Str::random(10),
@@ -41,6 +45,8 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Staf Fakultas 2',
                     'email' => 'staffakultas2@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => null,
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
                     'remember_token' => Str::random(10),
@@ -50,6 +56,8 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Dosen 1',
                     'email' => 'dosen1@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => 'img/ashley_graham_re4.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
                     'remember_token' => Str::random(10),
@@ -59,6 +67,8 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Dosen 2',
                     'email' => 'dosen2@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => 'img/chloe_dbh.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
                     'remember_token' => Str::random(10),
@@ -66,8 +76,10 @@ class UserSeeder extends Seeder
                     'created_at' => now(),
                 ],
                 [
-                    'name' => 'Dhita',
-                    'email' => 'dhita@gmail.com',
+                    'name' => 'Go Youn Jung',
+                    'email' => 'student1@gmail.com',
+                    'phone' => fake()->phoneNumber,
+                    'image' => 'img/goyounjung.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
                     'remember_token' => Str::random(10),

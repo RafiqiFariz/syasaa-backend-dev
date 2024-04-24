@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignIdFor(Role::class)->nullable()->after('id');
             $table->string('phone')->nullable()->after('email_verified_at');
+            $table->string('image')->nullable()->after('phone');
             $table->softDeletes()->after('updated_at');
         });
     }
@@ -25,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role_id', 'phone', 'deleted_at']);
+            $table->dropColumn(['role_id', 'phone', 'image', 'deleted_at']);
         });
     }
 };
