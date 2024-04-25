@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\AttendanceStoreRequest;
-use App\Http\Requests\V1\AttendanceUpdateRequest;
+use App\Http\Requests\V1\AttendanceRequest;
 use App\Http\Resources\V1\AttendanceCollection;
 use App\Http\Resources\V1\AttendanceResource;
 use App\Models\Attendance;
@@ -50,25 +49,23 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AttendanceStoreRequest $request): \Illuminate\Http\JsonResponse
+    public function store(AttendanceRequest $request): \Illuminate\Http\JsonResponse
     {
-        $imagePath = 'attendances/student-' . $request->student_id;
+        $isExist = Attendance::where('course_class_id', $request->course_class_id)
+            ->where('student_id', $request->student_id)
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
 
-        $data = $request->all();
+        if ($isExist) {
+            $courseClassName = $isExist->courseClass->course->name;
 
-        if ($request->hasFile('student_image')) {
-            $studentImageName = $request->student_id . '-' .
-                $request->course_class_id . time() . '.' . $request->student_image->extension();
-            $request->file('student_image')->storeAs($imagePath, $studentImageName, 'public');
-            $data['student_image'] = $studentImageName;
+            return response()->json([
+                "message" => "Attendance for today in $courseClassName course already created",
+                "data" => new AttendanceResource($isExist),
+            ]);
         }
 
-        if ($request->hasFile('lecturer_image')) {
-            $lecturerImageName = $request->student_id . '-lec-' .
-                $request->course_class_id . time() . '.' . $request->lecturer_image->extension();
-            $request->file('lecturer_image')->storeAs($imagePath, $lecturerImageName, 'public');
-            $data['lecturer_image'] = $lecturerImageName;
-        }
+        $data = $this->uploadAttendanceImage($request);
 
         return response()->json([
             "message" => "Attendance created successfully",
@@ -88,31 +85,17 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AttendanceUpdateRequest $request, Attendance $attendance): \Illuminate\Http\JsonResponse
+    public function update(AttendanceRequest $request, Attendance $attendance): \Illuminate\Http\JsonResponse
     {
-        $imagePath = 'attendances/student-' . $request->student_id;
-
-        $data = $request->all();
-
         if ($request->hasFile('student_image')) {
-            // hapus gambar lama
-            Storage::delete("public/$imagePath/$attendance->student_image");
-
-            $studentImageName = $request->student_id . '-' .
-                $request->course_class_id . time() . '.' . $request->student_image->extension();
-            $request->file('student_image')->storeAs($imagePath, $studentImageName, 'public');
-            $data['student_image'] = $studentImageName;
+            Storage::disk('public')->delete($attendance->getRawOriginal('student_image'));
         }
 
         if ($request->hasFile('lecturer_image')) {
-            // hapus gambar lama
-            Storage::delete("public/$imagePath/$attendance->lecturer_image");
-
-            $lecturerImageName = $request->student_id . '-lec-' .
-                $request->course_class_id . time() . '.' . $request->lecturer_image->extension();
-            $request->file('lecturer_image')->storeAs($imagePath, $lecturerImageName, 'public');
-            $data['lecturer_image'] = $lecturerImageName;
+            Storage::disk('public')->delete($attendance->getRawOriginal('lecturer_image'));
         }
+
+        $data = $this->uploadAttendanceImage($request);
 
         $attendance->update($data);
 
@@ -127,7 +110,36 @@ class AttendanceController extends Controller
      */
     public function destroy(Attendance $attendance): \Illuminate\Http\JsonResponse
     {
+        Storage::disk('public')->delete($attendance->getRawOriginal('student_image'));
+        Storage::disk('public')->delete($attendance->getRawOriginal('lecturer_image'));
+
         $attendance->delete();
         return response()->json(["message" => "Attendance deleted successfully"]);
+    }
+
+    /**
+     * @param AttendanceRequest $request
+     * @param string $imagePath
+     * @return array
+     */
+    protected function uploadAttendanceImage(AttendanceRequest $request): array
+    {
+        $imagePath = 'attendances/student/' . $request->student_id;
+        $data = $request->all();
+
+        if ($request->hasFile('student_image')) {
+            $studentImageName = $request->course_class_id . time() . '.' . $request->student_image->extension();
+            $request->file('student_image')->storeAs($imagePath, $studentImageName, 'public');
+            $data['student_image'] = "$imagePath/$studentImageName";
+        }
+
+        if ($request->hasFile('lecturer_image')) {
+            $lecturerImageName =
+                'lec-' . $request->course_class_id . time() . '.' . $request->lecturer_image->extension();
+            $request->file('lecturer_image')->storeAs($imagePath, $lecturerImageName, 'public');
+            $data['lecturer_image'] = "$imagePath/$lecturerImageName";
+        }
+
+        return $data;
     }
 }

@@ -24,7 +24,7 @@ class PermissionRoleSeeder extends Seeder
         $adminPermissions = $permissions;
         Role::findOrFail(1)->permissions()->sync($adminPermissions->pluck('id'));
 
-        $ignoredPrefixes = ['role_', 'permission_'];
+        $ignoredPrefixes = ['role_', 'permission_', 'attendance_request_', 'update_profile_request_'];
         $facultyStaffPermissions = $this->filterPermissions($permissions, $ignoredPrefixes);
         Role::findOrFail(2)->permissions()->sync($facultyStaffPermissions->pluck('id'));
 

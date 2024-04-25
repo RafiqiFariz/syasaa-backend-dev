@@ -5,7 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class AttendanceStoreRequest extends FormRequest
+class AttendanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,31 @@ class AttendanceStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'student_id' => 'required|exists:students,id',
             'course_class_id' => 'required|exists:course_class,id',
             'attendance_request_id' => 'nullable|exists:attendance_requests,id',
-            'student_image' => 'required|image|max:10240',
-            'lecturer_image' => 'required|image|max:10240',
             'is_present' => 'required|boolean',
         ];
+
+        if ($this->isMethod('POST')) {
+            $rules['student_image'] = 'required|image|max:10240';
+            $rules['lecturer_image'] = 'required|image|max:10240';
+
+            return $rules;
+        }
+
+        $rules['student_image'] = 'sometimes';
+        $rules['lecturer_image'] = 'sometimes';
+
+        if (request()->hasFile('student_image')) {
+            $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:10240';
+        }
+
+        if (request()->hasFile('lecturer_image')) {
+            $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:10240';
+        }
+
+        return $rules;
     }
 }

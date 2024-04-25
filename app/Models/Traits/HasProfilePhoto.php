@@ -66,7 +66,7 @@ trait HasProfilePhoto
     {
         return $this->attributes['image']
             ? Storage::disk($this->profilePhotoDisk())->url($this->attributes['image'])
-            : $this->defaultProfilePhotoUrl();
+            : $this->defaultImage();
     }
 
     /**
@@ -74,7 +74,7 @@ trait HasProfilePhoto
      *
      * @return string
      */
-    protected function defaultProfilePhotoUrl(): string
+    protected function defaultImage(): string
     {
         $name = trim(collect(explode(' ', $this->attributes['name']))->map(function ($segment) {
             return mb_substr($segment, 0, 1);
