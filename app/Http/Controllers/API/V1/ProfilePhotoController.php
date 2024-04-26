@@ -25,7 +25,6 @@ class ProfilePhotoController extends Controller
         $updater->update($request->user(), $request->all());
 
         return app(UpdatePhotoResponse::class);
-
     }
 
     /**
@@ -40,6 +39,5 @@ class ProfilePhotoController extends Controller
         $updater->delete($request->user());
 
         return app(DeletePhotoResponse::class);
-
     }
 }

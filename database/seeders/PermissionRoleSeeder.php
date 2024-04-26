@@ -28,7 +28,13 @@ class PermissionRoleSeeder extends Seeder
         $facultyStaffPermissions = $this->filterPermissions($permissions, $ignoredPrefixes);
         Role::findOrFail(2)->permissions()->sync($facultyStaffPermissions->pluck('id'));
 
-        $ignoredPrefixes = ['user_create', 'user_delete', 'user_restore', 'role_', 'permission_'];
+        $ignoredPrefixes = [
+            'user_create', 'user_delete', 'user_restore',
+            'role_', 'permission_', 'attendance_request_store',
+            'attendance_request_update', 'attendance_request_delete',
+            'update_profile_request_store', 'update_profile_request_update',
+        ];
+
         $lecturerPermissions = $this->filterPermissions($permissions, $ignoredPrefixes);
         Role::findOrFail(3)->permissions()->sync($lecturerPermissions->pluck('id'));
 
@@ -39,7 +45,7 @@ class PermissionRoleSeeder extends Seeder
             'course_class_create', 'course_class_update', 'course_class_delete',
             'faculty_create', 'faculty_update', 'faculty_delete', 'faculty_edit',
             'major_create', 'major_update', 'major_delete', 'major_edit',
-            'role_', 'permission_',
+            'role_', 'permission_', 'update_profile_request_edit_status',
         ];
 
         $studentPermissions = $this->filterPermissions($permissions, $ignoredPrefixes);

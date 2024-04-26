@@ -15,11 +15,12 @@ return new class extends Migration
         Schema::create('update_profile_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Student::class);
-            $table->string('image');
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->string('changed_data');
-            $table->string('change_to');
+            $table->string('old_value');
+            $table->string('new_value');
+            $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

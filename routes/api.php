@@ -28,5 +28,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('update-profile-requests', UpdateProfileRequestController::class);
+        Route::put('update-profile-requests/{update_profile_request}/status',
+            [UpdateProfileRequestController::class, 'updateStatus']
+        )->name('update-profile-requests.update-status');
     });
 });

@@ -62,7 +62,7 @@ class AttendanceController extends Controller
             return response()->json([
                 "message" => "Attendance for today in $courseClassName course already created",
                 "data" => new AttendanceResource($isExist),
-            ]);
+            ], Response::HTTP_CONFLICT);
         }
 
         $data = $this->uploadAttendanceImage($request);
@@ -119,7 +119,6 @@ class AttendanceController extends Controller
 
     /**
      * @param AttendanceRequest $request
-     * @param string $imagePath
      * @return array
      */
     protected function uploadAttendanceImage(AttendanceRequest $request): array

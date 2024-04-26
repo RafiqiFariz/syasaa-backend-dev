@@ -22,18 +22,13 @@ class RequestUpdateProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
+        return [
             'student_id' => 'required|exists:students,id',
-            'image' => 'required|mimes:jpg,jpeg,png|max:10240',
             'changed_data' => 'required|string',
-            'change_to' => 'required|string',
+            'old_value' => 'required_unless:changed_data,image|string',
+            'new_value' => 'required_unless:changed_data,image|string',
+            'image' => 'required_if:changed_data,image|mimes:jpg,jpeg,png|max:5120',
             'description' => 'nullable|string',
         ];
-
-        if ($this->isMethod('PUT') && $this->user()->role_id === 1) {
-            $rules['status'] = 'required|in:pending,accepted,rejected';
-        }
-
-        return $rules;
     }
 }

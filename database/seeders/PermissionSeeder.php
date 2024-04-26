@@ -99,14 +99,13 @@ class PermissionSeeder extends Seeder
             ['name' => 'attendance_request_access'],
             ['name' => 'attendance_request_create'],
             ['name' => 'attendance_request_update'],
-//            ['name' => 'attendance_request_delete'],
             ['name' => 'attendance_request_show'],
 
             // Update Profile Request Management
             ['name' => 'update_profile_request_access'],
             ['name' => 'update_profile_request_create'],
             ['name' => 'update_profile_request_update'],
-//            ['name' => 'update_profile_request_delete'],
+            ['name' => 'update_profile_request_edit_status'],
             ['name' => 'update_profile_request_show'],
 
             // Report Management
