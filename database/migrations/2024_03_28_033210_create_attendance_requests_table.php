@@ -20,8 +20,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('student_image');
-            $table->enum('evidence', ['present', 'permit', 'sick', 'alpha'])->default('present');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('evidence', ['present', 'absent', 'late', 'permit', 'sick', 'other'])->default('present');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->text('description');
             $table->timestamps();
         });

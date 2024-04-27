@@ -22,7 +22,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->string('student_image');
-            $table->string('lecturer_image');
+            $table->string('lecturer_image')->nullable();
             $table->boolean('is_present');
             $table->timestamps();
         });

@@ -8,12 +8,10 @@ use App\Http\Controllers\API\V1\CourseController;
 use App\Http\Controllers\API\V1\FacultyController;
 use App\Http\Controllers\API\V1\MajorController;
 use App\Http\Controllers\API\V1\PermissionController;
-use App\Http\Controllers\API\V1\ProfilePhotoController;
 use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\UpdateProfileRequestController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -31,5 +29,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('update-profile-requests/{update_profile_request}/status',
             [UpdateProfileRequestController::class, 'updateStatus']
         )->name('update-profile-requests.update-status');
+        Route::put('attendance-requests/{attendance_request}/status',
+            [AttendanceRequestController::class, 'updateStatus']
+        )->name('attendance-requests.update-status');
     });
 });

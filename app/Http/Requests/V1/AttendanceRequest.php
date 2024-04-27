@@ -30,8 +30,8 @@ class AttendanceRequest extends FormRequest
         ];
 
         if ($this->isMethod('POST')) {
-            $rules['student_image'] = 'required|image|max:10240';
-            $rules['lecturer_image'] = 'required|image|max:10240';
+            $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
+            $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
 
             return $rules;
         }
@@ -40,11 +40,11 @@ class AttendanceRequest extends FormRequest
         $rules['lecturer_image'] = 'sometimes';
 
         if (request()->hasFile('student_image')) {
-            $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:10240';
+            $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
         }
 
         if (request()->hasFile('lecturer_image')) {
-            $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:10240';
+            $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
         }
 
         return $rules;

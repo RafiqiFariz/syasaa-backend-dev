@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Actions\Profile\DeleteProfilePhoto;
-use App\Actions\Profile\UpdateProfilePhoto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RequestUpdateProfileRequest;
 use App\Http\Resources\V1\UpdateProfileRequestCollection;
 use App\Http\Resources\V1\UpdateProfileRequestResource;
-use App\Models\Student;
 use App\Models\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -110,8 +108,10 @@ class UpdateProfileRequestController extends Controller
             // maka update image student dengan image baru
             if ($updateProfileRequest->changed_data === 'image') {
                 $imgName = last(explode('/', $updateProfileRequest->new_value));
-                $newLocation = "profile-photos/$imgName";
+                $newLocation = "profile_photos/$imgName";
+
                 $deleteProfilePhoto->delete($student->first());
+                Storage::disk('public')->delete($updateProfileRequest->old_value);
                 Storage::disk('public')->copy($updateProfileRequest->new_value, $newLocation);
                 $student->update(['image' => $newLocation]);
             } else {
@@ -144,7 +144,7 @@ class UpdateProfileRequestController extends Controller
 
         $imagePath = 'update_profile_requests/student/' . $request->student_id;
         $imageName = $request->file('image')->getClientOriginalName();
-        $reqImageName = time() . '-' . Str::kebab(Str::lower($imageName));
+        $reqImageName = uniqid() . '-' . Str::kebab(Str::lower($imageName));
         $request->file('image')->storeAs($imagePath, $reqImageName, 'public');
         $data['image'] = "$imagePath/$reqImageName";
 
@@ -152,7 +152,7 @@ class UpdateProfileRequestController extends Controller
             $query->where('id', $request->student_id);
         })->first();
 
-        $data['old_value'] = $student->getRawOriginal('image');
+        $data['old_value'] = $student->getRawOriginal('image') ?? $student->image;
         $data['new_value'] = $data['image'];
 
         return $data;

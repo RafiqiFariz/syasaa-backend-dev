@@ -46,6 +46,7 @@ class PermissionRoleSeeder extends Seeder
             'faculty_create', 'faculty_update', 'faculty_delete', 'faculty_edit',
             'major_create', 'major_update', 'major_delete', 'major_edit',
             'role_', 'permission_', 'update_profile_request_edit_status',
+            'attendance_request_edit_status',
         ];
 
         $studentPermissions = $this->filterPermissions($permissions, $ignoredPrefixes);

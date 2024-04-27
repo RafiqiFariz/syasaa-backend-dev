@@ -22,7 +22,7 @@ trait HasProfilePhoto
 
             $this->forceFill([
                 'image' => $photo->storePubliclyAs(
-                    'profile-photos',
+                    'profile_photos',
                     $fileName,
                     ['disk' => $this->profilePhotoDisk()]
                 ),
