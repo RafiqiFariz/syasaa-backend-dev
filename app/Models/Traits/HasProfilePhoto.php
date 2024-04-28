@@ -64,7 +64,7 @@ trait HasProfilePhoto
      */
     public function getImageAttribute(): string
     {
-        return $this->attributes['image']
+        return isset($this->attributes['image'])
             ? Storage::disk($this->profilePhotoDisk())->url($this->attributes['image'])
             : $this->defaultImage();
     }

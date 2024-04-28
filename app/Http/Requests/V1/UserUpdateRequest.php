@@ -23,6 +23,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->request->get('id');
         return [
             'name' => 'required|string|max:255',
             'email' => [
@@ -30,10 +31,15 @@ class UserUpdateRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($this->request->get('id')),
+                Rule::unique('users', 'email')->ignore($id),
             ],
             'password' => 'nullable|string|min:8|confirmed',
-            'phone' => 'nullable|string|min:10|unique:users,phone',
+            'phone' => [
+                'nullable',
+                'string',
+                'min:10',
+                Rule::unique('users', 'phone')->ignore($id),
+            ],
             'role_id' => 'required|exists:roles,id',
             'faculty_id' => 'required_if:role_id,2|exists:faculties,id',
             'address' => 'required_if:role_id,3|string',

@@ -124,8 +124,7 @@ class AttendanceRequestController extends Controller
                 $studentImage
             );
 
-            Storage::disk('public')->delete($studentImage);
-            Storage::disk('public')->copy($studentImage, $newLocation);
+            Storage::disk('public')->move($studentImage, $newLocation);
         }
 
         return response()->json([
