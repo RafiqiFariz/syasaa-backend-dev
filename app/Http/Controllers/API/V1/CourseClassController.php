@@ -23,8 +23,10 @@ class CourseClassController extends Controller
         $includeClass = $request->query('includeClass');
         $includeCourse = $request->query('includeCourse');
         $includeLecturer = $request->query('includeLecturer');
+
         $classId = $request->query('class_id');
         $majorId = $request->query('major_id');
+        $lecturerId = $request->query('lecturer_id');
 
         $courseClasses = CourseClass::query();
 
@@ -48,6 +50,10 @@ class CourseClassController extends Controller
             $courseClasses = $courseClasses->whereHas('class', function ($query) use ($majorId) {
                 $query->where('major_id', $majorId);
             });
+        }
+
+        if ($lecturerId) {
+            $courseClasses = $courseClasses->where('lecturer_id', $lecturerId);
         }
 
         return new CourseClassCollection($courseClasses->paginate(20)->appends($request->query()));
