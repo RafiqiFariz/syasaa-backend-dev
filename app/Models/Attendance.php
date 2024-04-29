@@ -34,7 +34,7 @@ class Attendance extends Model
     protected function lecturerImage(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => Storage::disk('public')->url($value),
+            get: fn(string|null $value) => $value ? Storage::disk('public')->url($value) : null,
         );
     }
 }
