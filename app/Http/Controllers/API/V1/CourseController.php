@@ -19,6 +19,13 @@ class CourseController extends Controller
     public function index(Request $request): CourseCollection
     {
         abort_if(Gate::denies('course_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
+
+        $paginate = $request->query('paginate');
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new CourseCollection(Course::get());
+        }
+
         return new CourseCollection(Course::paginate(20));
     }
 

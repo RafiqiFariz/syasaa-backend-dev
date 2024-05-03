@@ -26,6 +26,7 @@ class UserController extends Controller
         $filterItems = $filter->transform($request); // [['column', 'operator', 'value']]
 
         $includeRole = $request->query('includeRole');
+        $paginate = $request->query('paginate');
 
         $users = User::where($filterItems);
 
@@ -43,6 +44,10 @@ class UserController extends Controller
             $users = $users->whereHas('student', function ($query) use ($request) {
                 $query->where('class_id', $request->class_id);
             });
+        }
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new UserCollection($users->get());
         }
 
         return new UserCollection($users->paginate(20)->appends($request->query()));
