@@ -20,6 +20,8 @@ class AttendanceResource extends JsonResource
             $courseClass = (new CourseClassResource($this->courseClass))->toArray($request);
             $courseClass['course'] = new CourseResource($this->courseClass->course);
             $courseClass['lecturer'] = new UserResource($this->courseClass->lecturer->user);
+            $this->courseClass->class->major->load('faculty');
+            $courseClass['class'] = new ClassResource($this->courseClass->class);
         }
 
         return [

@@ -25,6 +25,7 @@ class AttendanceController extends Controller
         $majorId = $request->query('major_id');
         $studentId = $request->query('student_id');
         $lecturerId = $request->query('lecturer_id');
+        $facultyId = $request->query('faculty_id');
         $paginate = $request->query('paginate');
 
         $attendances = Attendance::with([
@@ -53,6 +54,12 @@ class AttendanceController extends Controller
         if ($lecturerId) {
             $attendances = $attendances->whereHas('courseClass', function ($query) use ($lecturerId) {
                 $query->where('lecturer_id', $lecturerId);
+            });
+        }
+
+        if ($facultyId) {
+            $attendances = $attendances->whereHas('courseClass.class.major', function ($query) use ($facultyId) {
+                $query->where('faculty_id', $facultyId);
             });
         }
 
