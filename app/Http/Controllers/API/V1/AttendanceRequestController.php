@@ -28,6 +28,7 @@ class AttendanceRequestController extends Controller
         $classId = $request->query('class_id');
         $majorId = $request->query('major_id');
         $studentId = $request->query('student_id');
+        $paginate = $request->query('paginate');
 
         if ($classId) {
             $attendanceRequests = AttendanceRequest::whereHas('courseClass', function ($query) use ($classId) {
@@ -45,6 +46,10 @@ class AttendanceRequestController extends Controller
 
         if ($studentId) {
             $attendanceRequests = $attendanceRequests->where('student_id', $studentId);
+        }
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new AttendanceRequestCollection($attendanceRequests->get());
         }
 
         return new AttendanceRequestCollection($attendanceRequests->paginate(20)->appends($request->query()));
@@ -87,7 +92,7 @@ class AttendanceRequestController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage. (Ini sudah tidak dipakai)
      */
     public function update(RequestAttendanceRequest $request, AttendanceRequest $attendanceRequest): \Illuminate\Http\JsonResponse
     {

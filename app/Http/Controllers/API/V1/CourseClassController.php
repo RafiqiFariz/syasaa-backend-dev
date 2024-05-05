@@ -27,6 +27,7 @@ class CourseClassController extends Controller
         $classId = $request->query('class_id');
         $majorId = $request->query('major_id');
         $lecturerId = $request->query('lecturer_id');
+        $paginate = $request->query('paginate');
 
         $courseClasses = CourseClass::query();
 
@@ -54,6 +55,10 @@ class CourseClassController extends Controller
 
         if ($lecturerId) {
             $courseClasses = $courseClasses->where('lecturer_id', $lecturerId);
+        }
+
+        if ($paginate == 'false' || $paginate == '0') {
+            return new CourseClassCollection($courseClasses->get());
         }
 
         return new CourseClassCollection($courseClasses->paginate(20)->appends($request->query()));
