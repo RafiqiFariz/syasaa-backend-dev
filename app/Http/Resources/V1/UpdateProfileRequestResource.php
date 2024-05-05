@@ -17,7 +17,7 @@ class UpdateProfileRequestResource extends JsonResource
         return [
             'id' => $this->id,
             'student_id' => $this->student_id,
-            'student' => $this->student,
+            'student' => new StudentResource($this->student),
             'changed_data' => $this->changed_data,
             'image' => $this->image,
             'old_value' => $this->old_value,
