@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Faculty;
+use App\Models\FacultyStaff;
 use App\Models\MajorClass;
 use App\Models\Role;
 use App\Models\User;
@@ -91,11 +92,15 @@ class UserSeeder extends Seeder
 
         User::factory(4)->create();
 
+        // Untuk memastikan bahwa yg user idnya 2 dan 3 itu memiliki faculty id yang diinginkan
+        FacultyStaff::create(["user_id" => 2, "faculty_id" => 1]);
+        FacultyStaff::create(["user_id" => 3, "faculty_id" => 3]);
+
         $facultyIds = Faculty::all()->pluck('id')->toArray();
         $classIds = MajorClass::all()->pluck('id')->toArray();
 
         User::all()->each(function ($user) use ($classIds, $facultyIds) {
-            if ($user->role_id === 2) {
+            if ($user->role_id === 2 && $user->id > 3) {
                 $user->facultyStaff()->create(["faculty_id" => $facultyIds[array_rand($facultyIds)]]);
             } else if ($user->role_id === 3) {
                 $user->lecturer()->create(["address" => fake()->address]);
