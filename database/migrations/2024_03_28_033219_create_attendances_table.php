@@ -18,10 +18,11 @@ return new class extends Migration
             $table->foreignIdFor(Student::class);
             $table->foreignIdFor(AttendanceRequest::class)->nullable();
             $table->foreignId('course_class_id')
+                ->nullable()
                 ->constrained('course_class')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->string('student_image');
+            $table->string('student_image')->nullable();
             $table->string('lecturer_image')->nullable();
             $table->boolean('is_present');
             $table->timestamps();

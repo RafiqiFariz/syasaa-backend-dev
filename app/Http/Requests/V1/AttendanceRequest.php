@@ -24,12 +24,16 @@ class AttendanceRequest extends FormRequest
     {
         $rules = [
             'student_id' => 'required|exists:students,id',
-            'course_class_id' => 'required|exists:course_class,id',
-            'attendance_request_id' => 'nullable|exists:attendance_requests,id',
             'is_present' => 'required|boolean',
+            'course_class_id' => 'nullable',
         ];
 
-        if ($this->isMethod('POST')) {
+        if (request()->is_absent) {
+            $rules['course_class_id'] = 'required|exists:course_class,id';
+            $rules['attendance_request_id'] = 'nullable|exists:attendance_requests,id';
+        }
+
+        if ($this->isMethod('POST') && request()->is_absent) {
             $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
             $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
 

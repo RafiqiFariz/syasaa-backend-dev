@@ -105,7 +105,8 @@ class UserSeeder extends Seeder
             } else if ($user->role_id === 3) {
                 $user->lecturer()->create(["address" => fake()->address]);
             } else if ($user->role_id === 4) {
-                $user->student()->create(["class_id" => $classIds[array_rand($classIds)]]);
+                $classId = $user->id === 6 ? 53 : $classIds[array_rand($classIds)];
+                $user->student()->create(["class_id" => $classId]);
             }
         });
     }
