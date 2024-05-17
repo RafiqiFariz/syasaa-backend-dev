@@ -28,12 +28,12 @@ class AttendanceRequest extends FormRequest
             'course_class_id' => 'nullable',
         ];
 
-        if (request()->is_absent) {
+        if (request()->is_present) {
             $rules['course_class_id'] = 'required|exists:course_class,id';
             $rules['attendance_request_id'] = 'nullable|exists:attendance_requests,id';
         }
 
-        if ($this->isMethod('POST') && request()->is_absent) {
+        if ($this->isMethod('POST') && request()->is_present) {
             $rules['student_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
             $rules['lecturer_image'] = 'required|image|mimes:jpeg,png,jpg|max:4096';
 
