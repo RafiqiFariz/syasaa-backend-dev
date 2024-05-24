@@ -21,11 +21,19 @@ class UpdateProfileRequestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): UpdateProfileRequestCollection
+    public function index(Request $request): UpdateProfileRequestCollection
     {
         abort_if(Gate::denies('update_profile_request_access'), Response::HTTP_FORBIDDEN, 'Forbidden');
 
-        return new UpdateProfileRequestCollection(UpdateProfileRequest::paginate(20));
+        $latest = $request->query('latest');
+
+        $updateProfileRequests = UpdateProfileRequest::query();
+
+        if ($latest == 'true' || $latest == '1') {
+            $updateProfileRequests = $updateProfileRequests->latest();
+        }
+
+        return new UpdateProfileRequestCollection($updateProfileRequests->paginate(20)->appends($request->query()));
     }
 
     /**

@@ -29,6 +29,7 @@ class AttendanceRequestController extends Controller
         $majorId = $request->query('major_id');
         $studentId = $request->query('student_id');
         $facultyId = $request->query('faculty_id');
+        $latest = $request->query('latest');
         $paginate = $request->query('paginate');
 
         if ($classId) {
@@ -53,6 +54,10 @@ class AttendanceRequestController extends Controller
             $attendanceRequests = $attendanceRequests->whereHas('courseClass.class.major', function ($query) use ($facultyId) {
                 $query->where('faculty_id', $facultyId);
             });
+        }
+
+        if ($latest == 'true' || $latest == '1') {
+            $attendanceRequests = $attendanceRequests->latest();
         }
 
         if ($paginate == 'false' || $paginate == '0') {
