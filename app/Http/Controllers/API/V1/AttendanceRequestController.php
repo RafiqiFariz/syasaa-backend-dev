@@ -132,19 +132,20 @@ class AttendanceRequestController extends Controller
 
         if ($request->status === 'accepted') {
             $studentImage = $attendanceRequest->getRawOriginal('student_image');
+            $newLocation = Str::replace(
+                'attendance_requests', 'attendances',
+                $studentImage
+            );
 
             Attendance::firstOrCreate([
                 'student_id' => $attendanceRequest->student_id,
                 'course_class_id' => $attendanceRequest->course_class_id,
                 'is_present' => $attendanceRequest->evidence === 'present',
-                'student_image' => $studentImage,
+                'student_image' => $newLocation,
                 'attendance_request_id' => $attendanceRequest->id,
             ]);
 
-            $newLocation = Str::replace(
-                'attendance_requests', 'attendances',
-                $studentImage
-            );
+            $attendanceRequest->update(['student_image' => $newLocation]);
 
             Storage::disk('public')->move($studentImage, $newLocation);
         }
