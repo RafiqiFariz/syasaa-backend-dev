@@ -105,7 +105,13 @@ class UpdateProfileRequestController extends Controller
             // update status requestnya
             $updateProfileRequest->update($data);
 
-            if ($request->status !== 'accepted') DB::commit();
+            if ($request->status !== 'accepted') {
+                DB::commit();
+                return response()->json([
+                    "message" => "Status of data $updateProfileRequest->id updated successfully",
+                    "data" => new UpdateProfileRequestResource($updateProfileRequest)
+                ]);
+            }
 
             // Cari student yang melakukan request
             $student = User::whereHas('student', function ($query) use ($updateProfileRequest) {
