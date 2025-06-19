@@ -34,6 +34,6 @@
         "DB_HOST": "ep-orange-cherry-a172kasc.aws-ap-southeast-1.pg.laravel.cloud",
         "DB_PORT": "5432",
         "DB_DATABASE": "main",
-        "DB_USERNAME": "laravel",
+        "DB_USERNAME": "laravel"
     }
 }
