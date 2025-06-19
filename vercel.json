@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "framework": null,
+    "functions": {
+        "api/index.php": { "runtime": "vercel-php@0.6.0" }
+    },
+    "routes": [
+        { "src": "/build/(.*)", "dest": "/public/build/" },
+        { "src": "/(.*)", "dest": "/api/index.php" }
+    ],
+    "public": true,
+    "buildCommand": "vite build",
+    "outputDirectory": "public",
+    "env": {
+        "APP_NAME": "attendance-system",
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://yourproductionurl.com",
+        "APP_KEY": "base64:TGaVaXwhWgjn9akhE4SCSIjGG/cQqvICUQ+PgLA3Bs0=",
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "FRONTEND_URL": "https://attendance-web-syasaa.vercel.app",
+        "SANCTUM_STATEFUL_DOMAINS": "attendance-web-syasaa.vercel.app",
+        "SESSION_DOMAIN": "attendance-web-syasaa.vercel.app",
+        "VIEW_COMPILED_PATH": "/tmp",
+        "CACHE_DRIVER": "file",
+        "LOG_CHANNEL": "laravel-cloud-socket",
+        "LOG_STDERR_FORMATTER": "Monolog\\Formatter\\JsonFormatter",
+        "SESSION_DRIVER": "file",
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "ep-orange-cherry-a172kasc.aws-ap-southeast-1.pg.laravel.cloud",
+        "DB_PORT": "5432",
+        "DB_DATABASE": "main",
+        "DB_USERNAME": "laravel",
+    }
+}
