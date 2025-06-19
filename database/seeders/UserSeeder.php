@@ -11,6 +11,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
 {
@@ -19,12 +20,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $fake = Faker::create();
         DB::table('users')->insert(
             [
                 [
                     'name' => 'Admin',
                     'email' => 'admin@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => 'img/yoo_seung_ho.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('admin123'),
@@ -35,7 +37,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Staf Fakultas 1',
                     'email' => 'staffakultas1@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => null,
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
@@ -46,7 +48,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Staf Fakultas 2',
                     'email' => 'staffakultas2@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => null,
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
@@ -57,7 +59,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Dosen 1',
                     'email' => 'dosen1@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => 'img/ashley_graham_re4.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
@@ -68,7 +70,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Dosen 2',
                     'email' => 'dosen2@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => 'img/chloe_dbh.jpg',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
@@ -79,7 +81,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => 'Dhita',
                     'email' => 'student1@gmail.com',
-                    'phone' => fake()->phoneNumber,
+                    'phone' => $fake->phoneNumber,
                     'image' => 'img/dhita.png',
                     'email_verified_at' => now(),
                     'password' => bcrypt('12345678'),
@@ -99,11 +101,11 @@ class UserSeeder extends Seeder
         $facultyIds = Faculty::all()->pluck('id')->toArray();
         $classIds = MajorClass::all()->pluck('id')->toArray();
 
-        User::all()->each(function ($user) use ($classIds, $facultyIds) {
+        User::all()->each(function ($user) use ($fake, $classIds, $facultyIds) {
             if ($user->role_id === 2 && $user->id > 3) {
                 $user->facultyStaff()->create(["faculty_id" => $facultyIds[array_rand($facultyIds)]]);
             } else if ($user->role_id === 3) {
-                $user->lecturer()->create(["address" => fake()->address]);
+                $user->lecturer()->create(["address" => $fake->address]);
             } else if ($user->role_id === 4) {
                 $classId = $user->id === 6 ? 53 : $classIds[array_rand($classIds)];
                 $user->student()->create(["class_id" => $classId]);
