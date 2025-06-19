@@ -8,8 +8,8 @@
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/fortify": "^1.20",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.3",
+        "laravel/framework": "^v11.45.1",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8"
     },
     "require-dev": {
@@ -17,9 +17,9 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^7.0",
-        "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
+        "nunomaduro/collision": "^v8.8.1",
+        "pestphp/pest": "^v3.2.4",
+        "pestphp/pest-plugin-laravel": "^v3.2.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {

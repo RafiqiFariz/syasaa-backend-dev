@@ -30,7 +30,7 @@ class AuthGates
 
             foreach ($permissions as $name => $role) {
                 /**
-                 * cek apakah user yang bersangkutan memiliki hak akses tertentu,
+                 * Cek apakah user yang bersangkutan memiliki hak akses tertentu,
                  * jika punya maka definisikan gatenya
                  */
                 Gate::define($name, function ($user) use ($role) {
