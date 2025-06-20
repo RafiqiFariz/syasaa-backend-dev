@@ -21,8 +21,8 @@ class AttendanceFactory extends Factory
         return [
             'student_id' => User::where('role_id', 4)->inRandomOrder()->first()->student->id,
             'course_class_id' => CourseClass::inRandomOrder()->first()->id,
-            'student_image' => $this->faker->imageUrl(category: 'people'),
-            'lecturer_image' => $this->faker->imageUrl(category: 'people'),
+            'student_image' => env('APP_URL') . '/img/dhita.png',
+            'lecturer_image' => 'https://xsgames.co/randomusers/avatar.php?g=female',
             'is_present' => $this->faker->numberBetween(0, 1),
             'created_at' => $this->faker->dateTimeBetween('-1 days'),
         ];
