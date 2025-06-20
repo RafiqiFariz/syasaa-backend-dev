@@ -27,14 +27,41 @@ class Attendance extends Model
     protected function studentImage(): Attribute
     {
         return Attribute::make(
-            get: fn(string|null $value) => $value ? Storage::disk('public')->url($value) : null,
+            get: function (?string $value) {
+                if (!$value) return null;
+
+                // Jika dari web pihak ketiga
+                if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+                    return $value;
+                }
+
+                // Jika file dari folder public/img
+                if (str_starts_with($value, 'img/')) {
+                    return env('APP_URL') . '/' . $value;
+                }
+
+                // Sisanya dari storage
+                return Storage::disk('public')->url($value);
+            },
         );
     }
 
     protected function lecturerImage(): Attribute
     {
         return Attribute::make(
-            get: fn(string|null $value) => $value ? Storage::disk('public')->url($value) : null,
+            get: function (?string $value) {
+                if (!$value) return null;
+
+                if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+                    return $value;
+                }
+
+                if (str_starts_with($value, 'img/')) {
+                    return env('APP_URL') . '/' . $value;
+                }
+
+                return Storage::disk('public')->url($value);
+            },
         );
     }
 }
